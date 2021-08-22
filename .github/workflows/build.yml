@@ -1,0 +1,23 @@
+on: [push, pull_request]
+name: build
+jobs:
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, ubuntu-latest]
+        include:
+          - os: ubuntu-18.04
+          - os: ubuntu-latest
+      fail-fast: false
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+      - name: Building
+        run: |
+          cd sources
+          ./autogen.sh
+          ./configure
+          make
